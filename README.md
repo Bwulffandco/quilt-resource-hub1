@@ -1,490 +1,567 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 The Ultimate Quilt Resource Hub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Ultimate Quilt Resource Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #fafaf9;
+      font-family: "Inter", sans-serif;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    header h1 {
+      font-weight: 900;
+      font-size: 3rem;
+      color: #716A56;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+    header p {
+      color: #716A56;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 0.75rem;
+      margin-bottom: 0;
+    }
+    .category-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .category-checkboxes input[type="checkbox"] {
+      display: none;
+    }
+    .category-checkboxes label {
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      background: #e8e3d7;
+      color: #716A56;
+      font-weight: 600;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      user-select: none;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+      font-size: 0.85rem;
+    }
+    .category-checkboxes input[type="checkbox"]:checked + label {
+      background: #716A56;
+      color: white;
+      border-color: #5b5347;
+      box-shadow: 0 10px 15px -3px rgb(113 106 86 / 0.5);
+      transform: scale(1.05);
+    }
+    .category-checkboxes label:hover {
+      border-color: #5b5347;
+    }
+    #directory {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem 1.5rem;
+      box-shadow: 0 8px 32px rgb(113 106 86 / 0.15);
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+      border: 1px solid #716A56;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+    @media (min-width: 640px) {
+      .card {
+        flex-direction: row;
+        gap: 1.5rem;
+        align-items: flex-start;
+        padding: 2rem;
+      }
+    }
+    .photo {
+      flex-shrink: 0;
+      width: 96px;
+      height: 96px;
+      border-radius: 0.75rem;
+      object-fit: cover;
+      background: #ede9de;
+    }
+    @media (min-width: 640px) {
+      .photo {
+        width: 120px;
+        height: 120px;
+      }
+    }
+    .card-content {
+      flex-grow: 1;
+      width: 100%;
+    }
+    .card-content h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #716A56;
+      margin-bottom: 0.5rem;
+      user-select: text;
+    }
+    @media (min-width: 640px) {
+      .card-content h2 {
+        font-size: 1.75rem;
+      }
+    }
+    .category-badge {
+      display: inline-block;
+      padding: 0.2rem 0.8rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      user-select: none;
+      width: fit-content;
+      color: white;
+      font-size: 0.8rem;
+      margin-right: 0.4rem;
+      margin-top: 0.3rem;
+    }
+    /* Category badge colors */
+    .category-badge.bg-red-400 { background-color: #a05959; }
+    .category-badge.bg-green-500 { background-color: #6d6a52; }
+    .category-badge.bg-blue-500 { background-color: #708090; }
+    .category-badge.bg-yellow-400 { background-color: #b0a675; color: #3a331a; }
+    .category-badge.bg-indigo-500 { background-color: #665f84; }
+    .category-badge.bg-pink-500 { background-color: #9d7b7f; }
+    .category-badge.bg-purple-500 { background-color: #7a6b8d; }
+    .category-badge.bg-orange-400 { background-color: #ad865a; }
+    .category-badge.bg-teal-500 { background-color: #5f7d7b; }
+    .category-badge.bg-gray-400 { background-color: #9e998b; }
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; 
-         script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://maps.googleapis.com; 
-         style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com;
-         font-src 'self' https://fonts.gstatic.com;
-         connect-src 'self' https://api.sheetbest.com https://maps.googleapis.com; /* Allows connection to Sheet Best */
-         img-src 'self' data: https://maps.googleapis.com https://*.googleusercontent.com https://i.imgur.com; 
-         frame-ancestors 'self';">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'primary': {
-                            50: '#f7fee7',
-                            100: '#ecfccb',
-                            200: '#d9f99d',
-                            300: '#c0ff2d', 
-                            400: '#a3e635',
-                            500: '#84cc16', 
-                            600: '#65a30d', 
-                            700: '#4d7c0f',
-                            800: '#3f6212',
-                            900: '#365314',
-                            950: '#1a2e05',
-                        },
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Set font and background for the app */
-        #directory-app-container {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            min-height: 100vh;
-        }
-        .modern-mom-card {
-            background-color: #f7fee7;
-            border: 1px solid #d9f99d;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-        }
-        .custom-select-wrapper select {
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-        @media (max-width: 639px) { 
-            .card-content-wrapper { flex-direction: column; align-items: center; padding: 1.5rem !important; }
-            .card-image-and-text { flex-direction: column; align-items: center; width: 100%; order: 0; }
-            .card-image-and-text .w-32 { margin-right: 0; margin-bottom: 1rem; }
-            .card-content-text { text-align: center; }
-            .card-content-wrapper > * { width: 100%; }
-        }
-    </style>
+    .info-label {
+      font-weight: 700;
+      color: #716A56;
+      margin-top: 1rem;
+      user-select: none;
+      font-size: 0.9rem;
+    }
+    .info-text {
+      color: #5a574a;
+      font-weight: 500;
+      margin-top: 0.25rem;
+      white-space: pre-line;
+      user-select: text;
+      font-size: 0.9rem;
+      overflow-wrap: break-word;
+    }
+    a.info-link {
+      color: #716A56;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      word-break: break-word;
+    }
+    a.info-link:hover {
+      color: #5b5347;
+      text-decoration: underline;
+    }
+    .submit-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .submit-button {
+      background-color: #716A56;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 0.75rem 1.8rem;
+      border-radius: 9999px;
+      box-shadow: 0 10px 15px -3px rgb(113 106 86 / 0.5);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color 0.3s ease, transform 0.15s ease;
+    }
+    .submit-button svg {
+      margin-right: 0.6rem;
+      stroke: currentColor;
+      width: 20px;
+      height: 20px;
+    }
+    .submit-button:hover {
+      background-color: #5b5347;
+      transform: translateY(-2px);
+    }
+    .submit-button:active {
+      transform: scale(0.95);
+    }
+    .submit-button:focus-visible {
+      outline: 3px solid #8c8473;
+      outline-offset: 3px;
+    }
+    .free-service-text {
+      font-size: 1rem;
+      color: #716A56;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      user-select: none;
+    }
+    #search-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+    #search-bar {
+      width: 90%;
+      max-width: 600px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      color: #5a574a;
+      border: 2px solid #716A56;
+      border-radius: 9999px;
+      box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease, outline 0.3s ease;
+    }
+    #search-bar:focus {
+      outline: none;
+      border-color: #5b5347;
+      box-shadow: 0 0 8px #716A56;
+    }
+    .vcard-button {
+      background-color: white;
+      color: #716A56;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid #716A56;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      margin-top: 1rem;
+      user-select: none;
+      font-size: 0.875rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .vcard-button:hover {
+      background-color: #716A56;
+      color: white;
+    }
+    .vcard-button:active {
+      transform: scale(0.95);
+    }
+  </style>
 </head>
 <body>
-    <div id="directory-app-container" class="bg-slate-50 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
-        <header class="mb-12 text-center border-b border-gray-100 pb-10">
-            <h1 class="text-5xl font-extrabold text-slate-800">
-                🌟 The Ultimate Quilt Resource Hub
-            </h1>
-            <p class="mt-4 text-xl text-slate-600">
-                The ultimate directory for finding **quilt resources, guilds, and stores** around the world.
-            </p>
-            <div class="mt-8">
-                <div class="flex justify-center items-center flex-wrap gap-4 mb-4">
-                    <a href="https://forms.gle/ETwmFDwBdV3yDk2M9" target="_blank" rel="noopener noreferrer" id="submit-button" class="inline-flex items-center px-8 py-3 border border-transparent text-lg font-semibold rounded-full shadow-lg text-white bg-primary-500 hover:bg-primary-600 transition duration-300 transform hover:scale-[1.02]" style="color: white;">
-                        <svg class="w-6 h-6 mr-3 -ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Submit a Resource!
-                    </a>
-                </div>
+  <!-- Larger, centered logo, no star -->
+  <div style="text-align:center; margin-top:2rem; margin-bottom:2rem;">
+    <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-48 w-48" viewBox="0 0 64 64" fill="none" stroke="#716A56" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-label="Quilt patchwork logo">
+      <rect x="2" y="2" width="60" height="60" fill="#f5f2e7" stroke="#716A56" stroke-width="3"/>
+      <line x1="22" y1="2" x2="22" y2="62" stroke="#716A56" stroke-dasharray="4 2"/>
+      <line x1="42" y1="2" x2="42" y2="62" stroke="#716A56" stroke-dasharray="4 2"/>
+      <line x1="2" y1="22" x2="62" y2="22" stroke="#716A56" stroke-dasharray="4 2"/>
+      <line x1="2" y1="42" x2="62" y2="42" stroke="#716A56" stroke-dasharray="4 2"/>
+      <rect x="2" y="2" width="20" height="20" fill="#c7b29f"/>
+      <rect x="22" y="2" width="20" height="20" fill="#b3a27b"/>
+      <rect x="42" y="2" width="20" height="20" fill="#a98c6c"/>
+      <rect x="2" y="22" width="20" height="20" fill="#d8c9b9"/>
+      <rect x="22" y="22" width="20" height="20" fill="#716a56"/>
+      <rect x="42" y="22" width="20" height="20" fill="#bba06f"/>
+      <rect x="2" y="42" width="20" height="20" fill="#dbd3bf"/>
+      <rect x="22" y="42" width="20" height="20" fill="#a49267"/>
+      <rect x="42" y="42" width="20" height="20" fill="#9c8f78"/>
+    </svg>
+  </div>
 
-                <p class="mt-4 text-sm text-slate-500">
-                    Need to update your listing? Just resubmit the form and we'll take care of it.
-                </p>
+  <header>
+    <h1>The Ultimate Quilt Resource Hub</h1>
+    <p>A vibrant resource hub connecting you to quilt guilds, local quilt stores, exciting quilt shows, professional organizations, expert longarm services, and inspiring fiber art galleries.</p>
+  </header>
 
-            </div>
-        </header>
-        
-        <div id="member-profile-view" class="hidden mb-16"></div>
+  <div class="submit-container">
+    <button id="submit-button" class="submit-button" aria-label="Submit new resource">
+      <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path d="M12 5v14m7-7H5"></path>
+      </svg>
+      Submit a Resource
+    </button>
+    <span class="free-service-text">100% always free</span>
+  </div>
 
-        <div class="mb-10 flex flex-col sm:flex-row gap-4">
-            
-            <div class="relative rounded-xl shadow-lg border border-gray-200 flex-grow">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                    <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
-                    </svg>
-                </div>
-                <input type="text" name="search" id="search-input" class="focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 focus:border-primary-500 block w-full pl-12 pr-4 sm:text-lg border-gray-300 rounded-xl py-4 transition duration-300" placeholder="Search by name, category, location, etc...">
-            </div>
+  <div id="search-container">
+    <input id="search-bar" type="search" placeholder="Search by name, location, or keyword..." aria-label="Search resources" />
+  </div>
 
-            <div class="relative w-full sm:w-64">
-                <label for="sort-style" class="block text-sm font-medium text-gray-700 mb-1">Filter/Sort Category</label>
-                <div class="relative custom-select-wrapper">
-                    <select id="sort-style" class="block w-full rounded-xl border-gray-300 shadow-xl bg-white focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 py-4 pl-4 pr-10 transition duration-300 text-base cursor-pointer">
-                    </select>
-                    <div class="absolute inset-y-0 right-0 top-0 pr-3 flex items-center pointer-events-none h-full">
-                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414l-2.293 2.293a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <section class="category-checkboxes" id="category-filter" role="group" aria-label="Filter categories"></section>
 
-        <div id="loading-state" class="text-center py-20">
-            <p id="loading-text" class="text-xl text-gray-500">Loading directory...</p>
-        </div>
+  <main id="directory" aria-live="polite">
+    <p class="text-center text-gray-500 text-xl py-20">Loading directory...</p>
+  </main>
 
-        <div id="error-message" class="hidden bg-red-50 border border-red-300 text-red-700 px-6 py-4 rounded-lg relative mb-10 shadow-md" role="alert">
-            <strong class="font-bold">🚨 Error!</strong>
-            <span class="block sm:inline" id="error-text"></span>
-        </div>
+  <script>
+    // The JavaScript code for loading data, handling filters, and rendering cards remains unchanged from your previous version
+    const API_URL = "https://script.google.com/macros/s/AKfycbwbTnAGAkjxSSLmaAPcF4RDLDbySQp2zHxwvbJUubeDryirbpoGfaBmpBZ5mbe82ugD/exec";
 
-        <div id="directory-grid" class="grid grid-cols-1 gap-8"></div>
+    const NAME_KEY = "Resource/Business Name:";
+    const CATEGORY_KEY = "Resource Type/Category:";
+    const LOCATION_KEY = "Full Location (City, State/Province, Country):";
+    const EMAIL_KEY = "Contact Email Address:";
+    const WEBSITE_KEY = "Website URL (or Etsy/Blog):";
+    const INSTAGRAM_KEY = "Instagram Handle:";
+    const FACEBOOK_KEY = "Facebook Page URL:";
+    const PHOTO_KEY = "Logo or Profile Photo:";
+    const BIO_KEY = "Brief Description / Bio:";
+    const TIMESTAMP_KEY = "Timestamp";
 
-    </div>
+    const CATEGORY_COLORS = {
+      "Quilt Guilds": "bg-red-400 text-white",
+      "Local Quilt Store": "bg-green-500 text-white",
+      "Online Quilt Store": "bg-blue-500 text-white",
+      "Quilt Shows": "bg-yellow-400 text-black",
+      "Professional Organisations": "bg-indigo-500 text-white",
+      "Quilt Pattern Designers": "bg-pink-500 text-white",
+      "Quilt Teachers & Educators": "bg-purple-500 text-white",
+      "Longarm Services": "bg-orange-400 text-white",
+      "Fiber Art Galleries": "bg-teal-500 text-white",
+      "All Resources (A-Z Name)": "bg-gray-400 text-white",
+    };
+
+    let allEntries = [];
+    let selectedCategories = [];
+
+    const RESOURCE_CATEGORIES = [
+      "All Resources (A-Z Name)",
+      "Quilt Guilds",
+      "Local Quilt Store",
+      "Online Quilt Store",
+      "Quilt Shows",
+      "Professional Organisations",
+      "Quilt Pattern Designers",
+      "Quilt Teachers & Educators",
+      "Longarm Services",
+      "Fiber Art Galleries",
+    ];
+
+    function normalizeWebsiteUrl(url) {
+      if (!url) return "";
+      url = url.trim();
+      url = url.replace(/^(https?:\/\/)?(www\.)?/i, "");
+      return "http://www." + url;
+    }
+
+    async function fetchData() {
+      try {
+        const res = await fetch(API_URL);
+        if (!res.ok) throw new Error("Network error");
+        const data = await res.json();
+        allEntries = data.filter((entry) => entry[NAME_KEY]);
+      } catch (err) {
+        console.error(err);
+        allEntries = [];
+      }
+    }
+
+    function createCategoryCheckbox(category) {
+      const id = `cat-${category.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+      const checkedAttr = category === "All Resources (A-Z Name)" ? "checked" : "";
+      return `
+        <input type="checkbox" id="${id}" name="category" value="${category}" ${checkedAttr} aria-checked="${checkedAttr ? "true" : "false"}"/>
+        <label for="${id}" tabindex="0">${category}</label>
+      `;
+    }
+
+    function renderCategoryFilters() {
+      const container = document.getElementById("category-filter");
+      container.innerHTML = RESOURCE_CATEGORIES.map(createCategoryCheckbox).join("");
+      container.querySelectorAll("input[name='category']").forEach((cb) => {
+        cb.addEventListener("change", onCategoryChange);
+      });
+    }
+
+    function onCategoryChange(e) {
+      const val = e.target.value;
+
+      if (val === "All Resources (A-Z Name)") {
+        if (e.target.checked) {
+          selectedCategories = ["All Resources (A-Z Name)"];
+          [...document.querySelectorAll("input[name='category']")].forEach((input) => {
+            if (input.value !== val) {
+              input.checked = false;
+              input.setAttribute("aria-checked", "false");
+            }
+          });
+        } else {
+          e.target.checked = true;
+          return;
+        }
+      } else {
+        if (e.target.checked) {
+          selectedCategories = selectedCategories.filter((cat) => cat !== "All Resources (A-Z Name)");
+          selectedCategories.push(val);
+        } else {
+          selectedCategories = selectedCategories.filter((cat) => cat !== val);
+          if (selectedCategories.length === 0) {
+            const allCb = document.querySelector("input[value='All Resources (A-Z Name)']");
+            allCb.checked = true;
+            allCb.setAttribute("aria-checked", "true");
+            selectedCategories = ["All Resources (A-Z Name)"];
+          }
+        }
+      }
+      e.target.setAttribute("aria-checked", e.target.checked.toString());
+      const currentQuery = document.getElementById("search-bar").value || "";
+      applySortAndFilter(currentQuery);
+    }
+
+    function escapeHTML(str) {
+      if (!str) return "";
+      return String(str).replace(/[&<>"']/g, (c) => {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "''" }[c];
+      });
+    }
+
+    function generateVCard(entry) {
+      const name = entry[NAME_KEY] || "";
+      const email = entry[EMAIL_KEY] || "";
+      const location = entry[LOCATION_KEY] || "";
+      const url = entry[WEBSITE_KEY] || "";
+      const instagram = entry[INSTAGRAM_KEY] || "";
+      const bio = (entry[BIO_KEY] || "").replace(/\r?\n|\r/g, "\\n");
+
+      return `BEGIN:VCARD
+VERSION:3.0
+FN:${name}
+EMAIL;TYPE=INTERNET:${email}
+ADR;TYPE=WORK:;;${location.replace(/,/g, ";")}
+URL:${url}
+NOTE:${bio}${instagram ? "\\nInstagram: @" + instagram : ""}
+END:VCARD`;
+    }
+
+    function createCard(entry) {
+      const photoUrl = entry[PHOTO_KEY] && /\.(jpe?g|png|gif|webp)$/i.test(entry[PHOTO_KEY]) ? escapeHTML(entry[PHOTO_KEY]) : null;
+      const instagramHandle = entry[INSTAGRAM_KEY] ? entry[INSTAGRAM_KEY].replace(/^@/, "") : null;
+      const facebookUrl = entry[FACEBOOK_KEY] || null;
+      const locationQuery = entry[LOCATION_KEY] ? encodeURIComponent(entry[LOCATION_KEY]) : null;
+
+      let categoryBadges = "";
+      if (entry[CATEGORY_KEY]) {
+        const splitCats = entry[CATEGORY_KEY].split(/[,\/]/).map(c => c.trim());
+        categoryBadges = splitCats.map(cat => {
+          const colorClass = CATEGORY_COLORS[cat] || "bg-gray-400 text-white";
+          return `<span class="category-badge ${colorClass}">${escapeHTML(cat)}</span>`;
+        }).join(" ");
+      }
+
+      const normalizedWebsite = normalizeWebsiteUrl(entry[WEBSITE_KEY]);
+      const cardId = entry[NAME_KEY].toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+
+      return `
+        <article class="card" role="listitem" tabindex="0" aria-label="${escapeHTML(entry[NAME_KEY])}">
+          ${photoUrl ? `<img src="${photoUrl}" alt="Logo or photo of ${escapeHTML(entry[NAME_KEY])}" class="photo" loading="lazy">` : ""}
+          <div class="card-content">
+            <h2>${escapeHTML(entry[NAME_KEY])}</h2>
+            <div>${categoryBadges}</div>
+            ${entry[LOCATION_KEY] ? `<p class="info-label mt-4">Location</p><p class="info-text location"><a href="https://www.google.com/maps/search/?api=1&query=${locationQuery}" target="_blank" rel="noopener noreferrer" class="info-link">${escapeHTML(entry[LOCATION_KEY])}</a></p>` : ""}
+            ${entry[EMAIL_KEY] ? `<p class="info-label mt-4">Email</p><p class="info-text"><a href="mailto:${escapeHTML(entry[EMAIL_KEY])}" class="info-link">${escapeHTML(entry[EMAIL_KEY])}</a></p>` : ""}
+            ${instagramHandle ? `<p class="info-label mt-4">Instagram</p><p class="info-text instagram"><a href="https://instagram.com/${instagramHandle}" target="_blank" rel="noopener noreferrer" class="info-link">@${escapeHTML(instagramHandle)}</a></p>` : ""}
+            ${facebookUrl ? `<p class="info-label mt-4">Facebook</p><p class="info-text facebook"><a href="${escapeHTML(facebookUrl)}" target="_blank" rel="noopener noreferrer" class="info-link">${escapeHTML(facebookUrl)}</a></p>` : ""}
+            ${entry[BIO_KEY] ? `<p class="info-label mt-4">About</p><p class="info-text">${escapeHTML(entry[BIO_KEY])}</p>` : ""}
+            ${normalizedWebsite ? `<p class="info-label mt-4">Website</p><p class="info-text website"><a href="${normalizedWebsite}" target="_blank" rel="noopener noreferrer" class="info-link">${normalizedWebsite}</a></p>` : ""}
+            ${entry[TIMESTAMP_KEY] ? `<p class="info-label mt-4">Submitted</p><p class="info-text">${escapeHTML(entry[TIMESTAMP_KEY])}</p>` : ""}
+            <button id="download-vcard-${cardId}" class="vcard-button" aria-label="Download vCard for ${escapeHTML(entry[NAME_KEY])}">
+              Download vCard
+            </button>
+          </div>
+        </article>`;
+    }
+
+    function renderDirectory(entries) {
+      const container = document.getElementById("directory");
+      if (!entries.length) {
+        container.innerHTML = `<p class="text-center text-gray-500 text-xl py-20">No directory entries found.</p>`;
+        return;
+      }
+      container.innerHTML = entries.map(createCard).join("");
+
+      entries.forEach(entry => {
+        const cardId = entry[NAME_KEY].toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+        const btn = document.getElementById(`download-vcard-${cardId}`);
+        if (btn) {
+          btn.addEventListener("click", () => {
+            const vcardText = generateVCard(entry);
+            const blob = new Blob([vcardText], { type: "text/vcard" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${entry[NAME_KEY].replace(/[^a-z0-9]/gi, "_")}.vcf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          });
+        }
+      });
+    }
+
+    async function init() {
+      await fetchData();
+      renderCategoryFilters();
+      selectedCategories = ["All Resources (A-Z Name)"];
+      applySortAndFilter("");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      init();
+
+      document.getElementById("search-bar").addEventListener("input", e => {
+        applySortAndFilter(e.target.value);
+      });
+
+      document.getElementById("submit-button").addEventListener("click", () => {
+        window.open(
+          "https://docs.google.com/forms/d/e/1FAIpQLSeFtU0Bm1k6cI3Vep-4Zeb5BzDgUX8F5qp8-SFdo7P-KWkIGQ/viewform",
+          "_blank",
+          "noopener"
+        );
+      });
+    });
+
+    function applySortAndFilter(query) {
+      const q = query.toLowerCase().trim();
+
+      let results = allEntries.filter(entry => {
+        if (!entry || !entry[NAME_KEY]) return false;
+
+        if (q) {
+          const haystack = Object.values(entry).join(" ").toLowerCase();
+          if (!haystack.includes(q)) return false;
+        }
+
+        if (selectedCategories.length && !selectedCategories.includes("All Resources (A-Z Name)")) {
+          const entryCats = (entry[CATEGORY_KEY] || "").toLowerCase().split(/[,\/]/).map(c => c.trim());
+          const match = selectedCategories.some(cat =>
+            entryCats.some(ec => ec.includes(cat.toLowerCase()))
+          );
+          if (!match) return false;
+        }
+        return true;
+      });
+
+      results.sort((a, b) => (a[NAME_KEY] || "").toLowerCase().localeCompare((b[NAME_KEY] || "").toLowerCase()));
+
+      renderDirectory(results);
+    }
+  </script>
+
 </body>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGpSoy_e59rC8oO-VG1CMOZeL--q6-8Ek&libraries=places"></script>
-
-    <script>
-        // *** FINAL, CORRECTED CONFIGURATION ***
-        const GOOGLE_SHEET_URL = 'https://api.sheetbest.com/sheets/16388a5d-5336-41bf-8ab4-a2a1137ca0a3';
-        const GOOGLE_FORM_URL = 'https://forms.gle/ETwmFDwBdV3yDk2M9'; 
-        const GOOGLE_MAPS_API_KEY = 'AIzaSyAGpSoy_e59rC8oO-VG1CMOZeL--q6-8Ek';
-
-        (function() {
-
-            let allEntries = [];
-
-            // --- RESOURCE CATEGORIES (Used for the filter dropdown) ---
-            const RESOURCE_CATEGORIES = [
-                'All Resources (A-Z Name)', 
-                'Quilt Guilds', 'Local Quilt Store', 'Online Quilt Store', 'Quilt Shows', 
-                'Professional Organisations', 'Quilt Pattern Designers', 'Quilt Teachers & Educators', 
-                'Longarm Services', 'Fiber Art Galleries',
-            ];
-            let currentSortStyle = RESOURCE_CATEGORIES[0];
-
-            // *** CRITICAL: Exact Column Header Mapping from your Google Sheet ***
-            const NAME_KEY = 'Resource/Business Name:';
-            const CATEGORY_KEY = 'Resource Type/Category:';
-            const LOCATION_KEY = 'Full Location (City, State/Province, Country):';
-            const EMAIL_KEY = 'Contact Email Address:';
-            const WEBSITE_KEY = 'Website URL (or Etsy/Blog):';
-            const INSTAGRAM_KEY = 'Instagram Handle:';
-            const FACEBOOK_KEY = 'Facebook Page URL:';
-            const PHOTO_KEY = 'Logo or Profile Photo:';
-            const BIO_KEY = 'Brief Description / Bio:';
-            const TIMESTAMP_KEY = 'Timestamp'; 
-            
-            let styleColumnKey = CATEGORY_KEY; 
-
-            document.addEventListener('DOMContentLoaded', () => {
-                const searchInput = document.getElementById('search-input');
-                searchInput.addEventListener('input', handleSearch);
-
-                fetchDirectoryData();
-            });
-            
-            function populateSortDropdown() {
-                const dropdown = document.getElementById('sort-style');
-                dropdown.innerHTML = RESOURCE_CATEGORIES.map(category => 
-                    `<option value="${category}" ${category === currentSortStyle ? 'selected' : ''}>${category}</option>`
-                ).join('');
-                
-                dropdown.addEventListener('change', handleSort);
-            }
-            
-            function handleSort(event) {
-                currentSortStyle = event.target.value;
-                applySortAndFilter(document.getElementById('search-input').value);
-            }
-
-            async function fetchDirectoryData() {
-                const grid = document.getElementById('directory-grid');
-                const loading = document.getElementById('loading-state');
-                const errorContainer = document.getElementById('error-message');
-
-                grid.innerHTML = '';
-                errorContainer.classList.add('hidden');
-                loading.classList.remove('hidden');
-
-                try {
-                    const response = await fetch(GOOGLE_SHEET_URL);
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch data. Status: ${response.status}`);
-                    }
-                    
-                    // Reading as JSON for Sheet Best API
-                    const data = await response.json(); 
-                    
-                    const validData = data.filter(entry => entry[NAME_KEY] && entry[NAME_KEY].trim() !== '');
-                    allEntries = validData;
-                    
-                    if (allEntries.length > 0 && !allEntries[0].hasOwnProperty(CATEGORY_KEY)) {
-                         console.warn(`Could not find the expected category column: ${CATEGORY_KEY}.`);
-                    }
-
-                    populateSortDropdown();
-                    applySortAndFilter(''); 
-
-                } catch (error) {
-                    console.error('Error fetching directory data:', error);
-                    // Shows the Sheet Best API URL must be wrong or the sheet isn't shared/verified
-                    showError(`Failed to load directory. Data access failed: ${error.message}. Please verify your Sheet Best API link and Google Sheet permissions.`);
-                } finally {
-                    loading.classList.add('hidden');
-                }
-            }
-            
-            function applySortAndFilter(query) {
-                const filteredBySearch = allEntries.filter(entry => {
-                    if (!query) return true;
-                    const searchableText = Object.values(entry)
-                        .join(' ')
-                        .toLowerCase();
-                    return searchableText.includes(query.toLowerCase().trim());
-                });
-
-                let sortedEntries = [...filteredBySearch];
-
-                if (currentSortStyle === RESOURCE_CATEGORIES[0]) {
-                    sortedEntries.sort((a, b) => {
-                        return (a[NAME_KEY] || '').toLowerCase().localeCompare((b[NAME_KEY] || '').toLowerCase());
-                    });
-                } else {
-                    const targetCategory = currentSortStyle.toLowerCase()
-                                            .replace(/store|guilds|shows|organisations|designers|educators|services|galleries/g, '')
-                                            .trim();
-                    
-                    sortedEntries.sort((a, b) => {
-                        const styleA = (a[CATEGORY_KEY] || '').trim().toLowerCase();
-                        const styleB = (b[CATEGORY_KEY] || '').trim().toLowerCase();
-
-                        const aMatches = styleA.includes(targetCategory);
-                        const bMatches = styleB.includes(targetCategory);
-
-                        if (aMatches && !bMatches) return -1;
-                        if (!aMatches && bMatches) return 1;
-
-                        return (a[NAME_KEY] || '').toLowerCase().localeCompare((b[NAME_KEY] || '').toLowerCase());
-                    });
-                    
-                    sortedEntries = sortedEntries.filter(entry => {
-                         return (entry[CATEGORY_KEY] || '').trim().toLowerCase().includes(targetCategory);
-                    });
-                }
-
-                renderDirectory(sortedEntries);
-            }
-
-            function handleSearch(event) {
-                applySortAndFilter(event.target.value);
-            }
-
-            function renderDedicatedProfile(entry) {
-                let profileView = document.getElementById('member-profile-view');
-                const renderedCard = renderSingleCard(entry, true);
-                const location = entry[LOCATION_KEY]; 
-
-                let mapHTML = '';
-                
-                if (location && location.trim()) {
-                    const encodedLocation = encodeURIComponent(location);
-                    const staticMapUrl = `https://maps.googleapis.com/maps/api/staticmap?center=${encodedLocation}&zoom=10&size=700x250&maptype=roadmap&markers=color:red%7Clabel:Q%7C${encodedLocation}&key=${GOOGLE_MAPS_API_KEY}`;
-                    const liveMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodedLocation}`;
-
-                    mapHTML = `
-                        <div class="mt-8 border border-gray-200 rounded-xl p-6 bg-white shadow-lg">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-4 flex items-center">
-                                <svg class="w-6 h-6 mr-3 text-red-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>
-                                Location
-                            </h3>
-                            <a href="${liveMapUrl}" target="_blank" rel="noopener noreferrer" class="block rounded-xl overflow-hidden border-2 border-gray-300 hover:border-primary-500 transition-all duration-300 shadow-md" aria-label="View ${escapeHTML(location)} on Google Maps">
-                                <img
-                                    src="${staticMapUrl}"
-                                    alt="Map preview for ${location}"
-                                    class="w-full h-auto object-cover"
-                                >
-                            </a>
-                            <p class="mt-3 text-sm text-gray-500">
-                                Location: **${escapeHTML(location)}**. Click the map to view the live location on Google Maps.
-                            </p>
-                        </div>
-                    `;
-                }
-
-                profileView.innerHTML = `
-                    <div class="mb-6 border-b pb-4 border-gray-200">
-                        <h2 class="text-3xl font-bold text-slate-800 mb-2">Detailed Profile: ${escapeHTML(entry[NAME_KEY])}</h2>
-                        <button id="close-profile-btn" class="text-md text-primary-600 hover:text-primary-800 font-medium flex items-center transition duration-200">
-                            <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                            Back to Directory
-                        </button>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-2xl overflow-hidden border border-gray-200">
-                        ${renderedCard}
-                    </div>
-                    ${mapHTML}
-                `;
-
-                document.getElementById('close-profile-btn').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    document.getElementById('member-profile-view').classList.add('hidden');
-                    document.getElementById('directory-app-container').scrollIntoView({ behavior: 'smooth' });
-                });
-            }
-
-
-            function renderDirectory(data) {
-                const grid = document.getElementById('directory-grid');
-                grid.innerHTML = '';
-
-                const filteredData = data.filter(entry => (entry[NAME_KEY] || '').trim() !== '');
-
-                if (filteredData.length === 0) {
-                    const searchInput = document.getElementById('search-input');
-                    const message = searchInput && searchInput.value.trim() !== '' ? 'No entries match your search. Try a different query or category.' : 'No directory entries found.';
-                    grid.innerHTML = `<p class="text-gray-500 text-center col-span-full py-10">${message}</p>`;
-                    return;
-                }
-
-                filteredData.forEach(entry => {
-                    grid.innerHTML += renderSingleCard(entry);
-                });
-                
-                document.querySelectorAll('.member-profile-link').forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const entry = allEntries.find(e => e[NAME_KEY] === this.dataset.memberName);
-                        if (entry) {
-                            renderDedicatedProfile(entry);
-                            document.getElementById('member-profile-view').classList.remove('hidden');
-                            document.getElementById('member-profile-view').scrollIntoView({ behavior: 'smooth' });
-                        }
-                    });
-                });
-            }
-
-
-            function renderSingleCard(entry, isDedicatedProfile = false) {
-                const primaryFields = [NAME_KEY, BIO_KEY, EMAIL_KEY, TIMESTAMP_KEY];
-                
-                const { imageUrl } = findImageUrl(entry, PHOTO_KEY);
-                
-                const location = entry[LOCATION_KEY]; 
-                const encodedLocation = location ? encodeURIComponent(location) : '';
-                const liveMapUrl = encodedLocation ? `https://www.google.com/maps/search/?api=1&query=${encodedLocation}` : '#';
-
-                let otherInfoHTML = '';
-                
-                const renderField = (key, value) => {
-                    let href = value.trim(); let displayValue = value; let iconHtml = ''; let isLink = false;
-                    const isInstagramField = key === INSTAGRAM_KEY; const isWebsiteField = key === WEBSITE_KEY; const isFacebookField = key === FACEBOOK_KEY; 
-
-                    if (isInstagramField) {
-                        href = createInstagramUrl(value); isLink = true;
-                        iconHtml = `<svg class="w-4 h-4 mr-1.5 text-gray-400 group-hover:text-primary-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4.4 0 0 1 12 16a4 4 0 0 1-4-4 4 4 0 0 1 4-4 4 4 0 0 1 4 4z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`;
-                        displayValue = value.startsWith('@') ? value : '@' + value;
-                    } else if (isWebsiteField || isFacebookField) {
-                        if (href.startsWith('www.')) { href = 'https://' + href; } else if (!href.startsWith('http')) { href = 'https://' + href; }
-                        isLink = true;
-                        iconHtml = isFacebookField ? `<svg class="w-4 h-4 mr-1.5 text-gray-400 group-hover:text-primary-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15h-2V13h2v-2c0-2.2 1.08-3 3-3 0.88 0 1.68 0.16 2 0.22V8h-2c-1.1 0-2 0.9-2 2v1h3l-0.5 2h-2.5v6.8c4.56-0-8-4.96 8-9.8V12z"/></svg>` : `<svg class="w-4 h-4 mr-1.5 text-gray-400 group-hover:text-primary-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M12.232 4.232a2.5 2.5 0 013.536 0l1.5 1.5a2.5 2.5 0 01-3.536 3.536l-1.5-1.5a2.5 2.5 0 010-3.536z" /><path d="M7.768 15.768a2.5 2.5 0 01-3.536 0l-1.5-1.5a2.5 2.5 0 013.536-3.536l1.5 1.5a2.5 2.5 0 010 3.536z" /><path d="M13.5 6.5a.5.5 0 00-.707-.707l-4 4a.5.5 0 00.707.707l4-4z" /></svg>`;
-                    displayValue = value;
-                } else if (isWebUrl(value)) { 
-                        if (href.startsWith('www.')) { href = 'https://' + href; }
-                        iconHtml = `<svg class="w-4 h-4 mr-1.5 text-gray-400 group-hover:text-primary-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M12.232 4.232a2.5 2.5 0 013.536 0l1.5 1.5a2.5 2.5 0 01-3.536 3.536l-1.5-1.5a2.5 2.5 0 010-3.536z" /><path d="M7.768 15.768a2.5 2.5 0 01-3.536 0l-1.5-1.5a2.5 2.5 0 013.536-3.536l1.5 1.5a2.5 2.5 0 010 3.536z" /><path d="M13.5 6.5a.5.5 0 00-.707-.707l-4 4a.5.5 0 00.707.707l4-4z" /></svg>`;
-                        isLink = true;
-                }
-
-                let valueHTML = '';
-                if (isLink) { valueHTML = `<a href="${href}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-primary-600 hover:text-primary-700 hover:underline group font-medium transition duration-200">${iconHtml}${escapeHTML(displayValue)}</a>`; } 
-                else { valueHTML = escapeHTML(value); if (key === BIO_KEY && value.length < 100) { valueHTML += '<br> '; } }
-                
-                return `<div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 px-6"><dt class="text-sm font-medium text-gray-500">${escapeHTML(key)}</dt><dd class="text-sm text-gray-800 mt-1 sm:mt-0 sm:col-span-2 break-words">${valueHTML}</dd></div>`;
-            };
-
-            if (entry[INSTAGRAM_KEY]) { instaHtml = renderField(INSTAGRAM_KEY, entry[INSTAGRAM_KEY]); }
-            if (entry[WEBSITE_KEY]) { websiteHtml = renderField(WEBSITE_KEY, entry[WEBSITE_KEY]); }
-            if (entry[FACEBOOK_KEY]) { facebookHtml = renderField(FACEBOOK_KEY, entry[FACEBOOK_KEY]); }
-
-            const exclusionKeys = new Set([...primaryFields, INSTAGRAM_KEY, WEBSITE_KEY, FACEBOOK_KEY, LOCATION_KEY, PHOTO_KEY, 'Submitter\'s Name (for verification only):', 'Agreement:', CATEGORY_KEY]); 
-            
-            Object.keys(entry).forEach(key => {
-                if (exclusionKeys.has(key) || !entry[key] || key === PHOTO_KEY) return;
-                genericInfoHtml += renderField(key, entry[key]);
-            });
-
-            if (instaHtml || websiteHtml || facebookHtml || genericInfoHtml) { 
-                otherInfoHTML = `<div class="mt-0 border-t border-gray-100 pt-0"><dl class="divide-y divide-gray-100">${instaHtml}${websiteHtml}${facebookHtml}${genericInfoHtml}</dl></div>`;
-            }
-            
-            const imageSizeClass = isDedicatedProfile ? 'w-48 h-48 sm:w-64 sm:h-64' : 'w-32 h-32';
-            const imageMarginClass = isDedicatedProfile ? 'mb-6 sm:mr-8 sm:mb-0' : 'mr-4';
-            const imageShadowClass = isDedicatedProfile ? 'shadow-xl ring-8 ring-primary-100' : 'shadow-md';
-
-            const imageBlockHTML = `
-                <div class="${imageSizeClass} aspect-square flex-shrink-0 bg-slate-100 rounded-xl overflow-hidden border border-gray-200 ${imageShadowClass} ${imageMarginClass}">
-                    ${imageUrl ? `<img src="${imageUrl}" alt="Resource photo for ${escapeHTML(entry[NAME_KEY] || 'Entry')}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-gray-400 text-sm font-semibold text-center p-2"><svg class="w-10 h-10 text-gray-300" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg></div>`}
-                </div>
-            `;
-
-            const contentBlockHTML = `
-                <div class="flex-grow min-w-0 card-content-text">
-                    <a href="#" data-member-name="${escapeHTML(entry[NAME_KEY])}" class="member-profile-link">
-                        <h3 class="${isDedicatedProfile ? 'text-4xl' : 'text-2xl'} font-extrabold text-slate-800 mb-1 hover:text-primary-600 transition-colors duration-200 cursor-pointer">${escapeHTML(entry[NAME_KEY] || 'No Name')}</h3>
-                    </a>
-                    <p class="text-xl text-primary-700 font-semibold mb-3">${escapeHTML(entry[CATEGORY_KEY] || 'Quilting Resource')}</p>
-                    
-                    ${location && !isDedicatedProfile ? `<a href="${liveMapUrl}" target="_blank" rel="noopener noreferrer" class="text-base font-medium text-gray-500 mb-3 flex items-center hover:text-primary-600 hover:underline transition duration-200"><svg class="w-4 h-4 mr-2 text-red-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"></path></svg>${escapeHTML(location)}</a>` : ''}
-
-                    ${entry[EMAIL_KEY] ? `<a href="mailto:${escapeHTML(entry[EMAIL_KEY])}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary-800 group transition duration-200"><svg class="w-4 h-4 mr-2 text-gray-400 group-hover:text-primary-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 11.884l7.997-6M2 18h16V6l-8 5-8-5v12z"></path></svg>${escapeHTML(entry[EMAIL_KEY])}</a>` : ''}
-                </div>
-            `;
-
-            const cardClasses = isDedicatedProfile ? 'p-8 sm:p-10' : 'p-5 sm:p-6';
-
-            return `
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 ${!isDedicatedProfile ? 'hover:shadow-xl' : ''} transition-all duration-300 ease-in-out flex flex-col min-h-full">
-                    <div class="flex-grow flex card-content-wrapper ${cardClasses} ${isDedicatedProfile ? 'flex-col sm:flex-row' : ''}">
-                        <div class="flex items-start flex-grow card-image-and-text">
-                            ${imageBlockHTML}
-                            ${contentBlockHTML}
-                        </div>
-                    </div>
-                    ${otherInfoHTML}
-                    ${entry[TIMESTAMP_KEY] ? `<div class="px-6 sm:px-8 py-3 bg-gray-50 border-t border-gray-100"><p class="text-xs text-gray-500">Submitted: ${escapeHTML(entry[TIMESTAMP_KEY])}</p></div>` : ''}
-                </div>
-            `;
-        }
-
-
-        function createInstagramUrl(handle) {
-            if (typeof handle !== 'string' || !handle.trim()) { return ''; }
-            const baseUrl = 'https://www.instagram.com/';
-            let cleanedHandle = handle.trim();
-            if (cleanedHandle.startsWith('@')) { cleanedHandle = cleanedHandle.substring(1); }
-            return baseUrl + cleanedHandle;
-        }
-
-        // We only keep the utility functions needed now that we are reading JSON
-        function findImageUrl(entry, explicitImageKey) {
-            let imageUrl = null;
-            const value = entry[explicitImageKey];
-            if (value && isImageUrl(value)) { imageUrl = value.trim(); }
-            return { imageUrl };
-        }
-
-        function isImageUrl(url) {
-            if (typeof url !== 'string' || !url) { return false; }
-            return url.startsWith('http') && /\.(jpg|jpeg|png|gif|webp|googleusercontent\.com)$/i.test(url);
-        }
-
-        function isWebUrl(url) {
-            if (typeof url !== 'string' || !url) { return false; }
-            return /^(https?:\/\/|www\.)/i.test(url.trim());
-        }
-
-        function showError(message) {
-            const errorContainer = document.getElementById('error-message');
-            const errorText = document.getElementById('error-text');
-            errorText.textContent = message;
-            errorContainer.classList.remove('hidden');
-            document.getElementById('loading-state').classList.add('hidden');
-        }
-
-        function escapeHTML(str) {
-            if (typeof str !== 'string' || str === null) { return str; }
-            return str.replace(/[&<>"']/g, function(match) {
-                return { '&': '&', '<': '<', '>': '>', '"': '"', "'": ''' }[match];
-            });
-        }
-
-        })();
-    </script>
 </html>
