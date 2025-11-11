@@ -9,8 +9,8 @@
          script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://maps.googleapis.com; 
          style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com;
          font-src 'self' https://fonts.gstatic.com;
-         connect-src 'self' https://api.sheetbest.com https://maps.googleapis.com; /* UPDATED to allow sheetbest.com */
-         img-src 'self' data: https://maps.googleapis.com https://*.googleusercontent.com https://i.imgur.com;
+         connect-src 'self' https://api.sheetbest.com https://maps.googleapis.com; /* Allows connection to Sheet Best */
+         img-src 'self' data: https://maps.googleapis.com https://*.googleusercontent.com https://i.imgur.com; 
          frame-ancestors 'self';">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
@@ -20,15 +20,14 @@
             theme: {
                 extend: {
                     colors: {
-                        // Custom green colors based on 'lime' and 'chartreuse' feel
                         'primary': {
                             50: '#f7fee7',
                             100: '#ecfccb',
                             200: '#d9f99d',
                             300: '#c0ff2d', 
                             400: '#a3e635',
-                            500: '#84cc16', // Main button color
-                            600: '#65a30d', // Hover color
+                            500: '#84cc16', 
+                            600: '#65a30d', 
                             700: '#4d7c0f',
                             800: '#3f6212',
                             900: '#365314',
@@ -43,48 +42,25 @@
         /* Set font and background for the app */
         #directory-app-container {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Tailwind 'slate-50' */
+            background-color: #f8fafc;
             min-height: 100vh;
         }
-
-        /* Custom style for the card background - Updated for new color */
         .modern-mom-card {
-            background-color: #f7fee7; /* primary-50 */
-            border: 1px solid #d9f99d; /* primary-200 */
+            background-color: #f7fee7;
+            border: 1px solid #d9f99d;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
         }
-
-        /* --- FIX: Custom styling for the select dropdown to ensure consistent appearance --- */
         .custom-select-wrapper select {
-            /* Hide default arrow */
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
         }
-        
-        /* Responsive adjustments for smaller screens (kept the original responsive rules) */
-        @media (max-width: 639px) { /* sm breakpoint */
-            .card-content-wrapper {
-                flex-direction: column; 
-                align-items: center; 
-                padding: 1.5rem !important;
-            }
-            .card-image-and-text {
-                flex-direction: column; 
-                align-items: center; 
-                width: 100%;
-                order: 0;
-            }
-            .card-image-and-text .w-32 {
-                margin-right: 0;
-                margin-bottom: 1rem; 
-            }
-            .card-content-text {
-                text-align: center;
-            }
-            .card-content-wrapper > * {
-                width: 100%;
-            }
+        @media (max-width: 639px) { 
+            .card-content-wrapper { flex-direction: column; align-items: center; padding: 1.5rem !important; }
+            .card-image-and-text { flex-direction: column; align-items: center; width: 100%; order: 0; }
+            .card-image-and-text .w-32 { margin-right: 0; margin-bottom: 1rem; }
+            .card-content-text { text-align: center; }
+            .card-content-wrapper > * { width: 100%; }
         }
     </style>
 </head>
@@ -115,8 +91,7 @@
             </div>
         </header>
         
-        <div id="member-profile-view" class="hidden mb-16">
-        </div>
+        <div id="member-profile-view" class="hidden mb-16"></div>
 
         <div class="mb-10 flex flex-col sm:flex-row gap-4">
             
@@ -133,7 +108,7 @@
                 <label for="sort-style" class="block text-sm font-medium text-gray-700 mb-1">Filter/Sort Category</label>
                 <div class="relative custom-select-wrapper">
                     <select id="sort-style" class="block w-full rounded-xl border-gray-300 shadow-xl bg-white focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 py-4 pl-4 pr-10 transition duration-300 text-base cursor-pointer">
-                        </select>
+                    </select>
                     <div class="absolute inset-y-0 right-0 top-0 pr-3 flex items-center pointer-events-none h-full">
                         <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414l-2.293 2.293a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     </div>
@@ -150,25 +125,18 @@
             <span class="block sm:inline" id="error-text"></span>
         </div>
 
-        <div id="directory-grid" class="grid grid-cols-1 gap-8">
-        </div>
+        <div id="directory-grid" class="grid grid-cols-1 gap-8"></div>
 
     </div>
 </body>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGpSoy_e59rC8oO-VG1CMOZeL--q6-8Ek&libraries=places"></script>
 
     <script>
-        // --- 1. CONFIGURATION ---
-        // *** SHEET BEST API URL (FINAL CORRECTED LINK) ***
+        // *** FINAL, CORRECTED CONFIGURATION ***
         const GOOGLE_SHEET_URL = 'https://api.sheetbest.com/sheets/16388a5d-5336-41bf-8ab4-a2a1137ca0a3';
-
-        // GOOGLE FORM VIEW URL (Hardcoded in HTML for reliability)
         const GOOGLE_FORM_URL = 'https://forms.gle/ETwmFDwBdV3yDk2M9'; 
-        
-        // 2. JS CONFIG: Google Maps API Key
         const GOOGLE_MAPS_API_KEY = 'AIzaSyAGpSoy_e59rC8oO-VG1CMOZeL--q6-8Ek';
 
-        // --- 2. STARTUP VARS ---
         (function() {
 
             let allEntries = [];
@@ -176,15 +144,9 @@
             // --- RESOURCE CATEGORIES (Used for the filter dropdown) ---
             const RESOURCE_CATEGORIES = [
                 'All Resources (A-Z Name)', 
-                'Quilt Guilds',
-                'Local Quilt Store',
-                'Online Quilt Store',
-                'Quilt Shows', 
-                'Professional Organisations',
-                'Quilt Pattern Designers',
-                'Quilt Teachers & Educators',
-                'Longarm Services',
-                'Fiber Art Galleries',
+                'Quilt Guilds', 'Local Quilt Store', 'Online Quilt Store', 'Quilt Shows', 
+                'Professional Organisations', 'Quilt Pattern Designers', 'Quilt Teachers & Educators', 
+                'Longarm Services', 'Fiber Art Galleries',
             ];
             let currentSortStyle = RESOURCE_CATEGORIES[0];
 
@@ -202,20 +164,6 @@
             
             let styleColumnKey = CATEGORY_KEY; 
 
-            // --- 3. SEEDED RANDOM NUMBER GENERATOR (Unused, but kept for legacy) ---
-            function seededRandom(seed) {
-                const a = 1664525;
-                const c = 1013904223;
-                const m = Math.pow(2, 32);
-                let currentSeed = seed;
-
-                return function() {
-                    currentSeed = (a * currentSeed + c) % m;
-                    return currentSeed / m;
-                };
-            }
-
-            // --- 4. EVENT LISTENER (Simplified) ---
             document.addEventListener('DOMContentLoaded', () => {
                 const searchInput = document.getElementById('search-input');
                 searchInput.addEventListener('input', handleSearch);
@@ -252,7 +200,7 @@
                         throw new Error(`Failed to fetch data. Status: ${response.status}`);
                     }
                     
-                    // *** JSON PARSING: Read response as JSON, not CSV ***
+                    // Reading as JSON for Sheet Best API
                     const data = await response.json(); 
                     
                     const validData = data.filter(entry => entry[NAME_KEY] && entry[NAME_KEY].trim() !== '');
@@ -267,8 +215,8 @@
 
                 } catch (error) {
                     console.error('Error fetching directory data:', error);
-                    // Show error for the CORS/fetch failure
-                    showError(`Failed to load directory. Data access failed: ${error.message}. Please ensure your Sheet Best API is correct.`);
+                    // Shows the Sheet Best API URL must be wrong or the sheet isn't shared/verified
+                    showError(`Failed to load directory. Data access failed: ${error.message}. Please verify your Sheet Best API link and Google Sheet permissions.`);
                 } finally {
                     loading.classList.add('hidden');
                 }
@@ -504,9 +452,7 @@
             return baseUrl + cleanedHandle;
         }
 
-        // *** NOTE: parseCSV is now unused because we are reading JSON from Sheet Best ***
-        // function parseCSV(text) { ... }
-
+        // We only keep the utility functions needed now that we are reading JSON
         function findImageUrl(entry, explicitImageKey) {
             let imageUrl = null;
             const value = entry[explicitImageKey];
